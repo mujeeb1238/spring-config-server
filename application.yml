@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: common-config
+
+# Common properties shared across all applications
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+
+# Common actuator settings
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always

@@ -1,0 +1,14 @@
+# Development-specific configurations for service1
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/service1db_dev
+    username: dev_user
+    password: dev_password
+
+logging:
+  level:
+    com.example.service1: DEBUG
+
+service1:
+  feature:
+    debug-mode: true

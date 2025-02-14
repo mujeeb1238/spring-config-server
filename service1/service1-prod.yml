@@ -1,0 +1,16 @@
+# Production-specific configurations for service1
+spring:
+  datasource:
+    url: jdbc:postgresql://prod-db:5432/service1db_prod
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+logging:
+  level:
+    com.example.service1: WARN
+
+service1:
+  feature:
+    debug-mode: false
+  cache:
+    ttl: 7200
