@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name: service1
+    name: client-service
 
 # Common service-specific settings
 service1:
