@@ -1,63 +1,16 @@
+# Common configurations for all profiles
+server:
+  port: 8081
+
 spring:
   application:
-    name: auth-service
-  config:
-    import: "optional:configserver:http://localhost:8888"
-  profiles:
-    active: dev
-  cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        instanceId: ${spring.application.name}:${random.value}
-        healthCheckPath: /actuator/health
-        healthCheckInterval: 15s
-        register: true
-        prefer-ip-address: true
-        tags:
-          - auth-service
-          - spring-cloud
-        metadata:
-          version: 1.0
+    name: client-service
 
-server:
-  port: 9000
-  servlet:
-    context-path: /
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,prometheus
-      base-path: /actuator
-  endpoint:
-    health:
-      show-details: always
-      probes:
-        enabled: true
-    info:
-      enabled: true
-  health:
-    consul:
-      enabled: true
-    livenessState:
-      enabled: true
-    readinessState:
-      enabled: true
-  info:
-    env:
-      enabled: true
-  metrics:
-    tags:
-      application: ${spring.application.name}
-      environment: ${spring.profiles.active:dev}
-
-jwt:
-  access-token:
-    expiration: 900  # 15 minutes
-  refresh-token:
-    expiration: 604800  # 7 days
-  id-token:
-    expiration: 3600  # 1 hour
+# Common service-specific settings
+service1:
+  feature:
+    enabled: true
+  cache:
+    ttl: 3600
+  api:
+    timeout: 5000

@@ -1,15 +1,10 @@
+# Production-specific configurations for client-service
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://prod-db:5432/service1db_prod
+    username: root
+    password: password
     driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 50
-      minimum-idle: 20
-      idle-timeout: 300000
-      connection-timeout: 20000
-      max-lifetime: 1200000
   jpa:
     hibernate:
       ddl-auto: validate
@@ -17,76 +12,50 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+
+logging:
+  level:
+    com.example.clientservice: WARN
+    org.hibernate: ERROR
+    root: WARN
+  file:
+    name: /var/log/client-service/application-prod.log
+    max-size: 500MB
+    max-history: 60
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+client-service:
+  feature:
+    enabled: true
+    debug-mode: false
+  cache:
+    ttl: 7200
+  api:
+    timeout: 3000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+  metrics:
+    tags:
+      application: client-service
+      environment: production
 
 server:
-  port: ${SERVER_PORT:9000}
-  error:
-    include-message: never
-    include-binding-errors: never
   tomcat:
-    max-threads: 400
-    min-spare-threads: 40
+    max-threads: 200
+    min-spare-threads: 20
     max-connections: 10000
     accept-count: 100
   compression:
     enabled: true
     mime-types: application/json,application/xml,text/html,text/xml,text/plain
     min-response-size: 2048
-
-jwt:
-  secret: ${JWT_SECRET}
-
-logging:
-  level:
-    root: WARN
-    com.example.authservice: INFO
-    org.springframework.security: WARN
-  file:
-    name: /var/log/auth-service/application-prod.log
-    max-size: 500MB
-  logback:
-    rollingpolicy:
-      max-history: 60
-      max-file-size: 500MB
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,prometheus
-  endpoint:
-    health:
-      show-details: never
-  metrics:
-    tags:
-      application: auth-service
-      environment: production
-    distribution:
-      percentiles-histogram:
-        http.server.requests: true
-      sla:
-        http.server.requests: 10ms,50ms,100ms,200ms,500ms
-  health:
-    probes:
-      enabled: true
-  info:
-    env:
-      enabled: false
-
-resilience4j:
-  ratelimiter:
-    instances:
-      auth:
-        limitForPeriod: 100
-        limitRefreshPeriod: 1s
-        timeoutDuration: 2s
-  retry:
-    instances:
-      auth:
-        maxAttempts: 3
-        waitDuration: 1s
-        enableExponentialBackoff: true
-        exponentialBackoffMultiplier: 2
