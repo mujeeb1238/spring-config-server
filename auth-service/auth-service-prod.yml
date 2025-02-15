@@ -1,9 +1,9 @@
 # Production-specific configurations for auth-service
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/auth_service_dev
-    username: dev_user
-    password: dev_password
+    url: jdbc:postgresql://localhost:5432/auth_service_prod
+    username: prod_user
+    password: prod_password
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
