@@ -1,6 +1,6 @@
 # Common configurations for all profiles
 server:
-  port: 8082
+  port: 9000
 
 spring:
   application:
