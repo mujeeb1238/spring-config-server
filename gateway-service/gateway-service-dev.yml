@@ -9,6 +9,12 @@ spring:
             - Path=/api/users/**
           filters:
             - StripPrefix=0
+        - id: auth-service_route
+          uri: http://localhost:9000
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=0
       httpclient:
         connect-timeout: 2000
         response-timeout: 5s
