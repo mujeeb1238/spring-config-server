@@ -1,0 +1,29 @@
+# Common configurations for Auth Service
+spring:
+  application:
+    name: auth-service
+  cloud:
+    consul:
+      discovery:
+        register: true
+        prefer-ip-address: true
+
+server:
+  port: 9000
+
+jwt:
+  access-token:
+    expiration: 900 # 15 minutes
+  refresh-token:
+    expiration: 604800 # 7 days
+  id-token:
+    expiration: 3600 # 1 hour
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
