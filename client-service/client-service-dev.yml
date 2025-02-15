@@ -20,6 +20,6 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
-service1:
+client-service:
   feature:
     debug-mode: true
