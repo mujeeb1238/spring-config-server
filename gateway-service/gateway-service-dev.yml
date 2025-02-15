@@ -1,0 +1,21 @@
+# Development-specific configurations for Gateway Service
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: service1_route
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - StripPrefix=0
+      httpclient:
+        connect-timeout: 2000
+        response-timeout: 5s
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty: DEBUG
+    org.springframework.web: DEBUG
+    root: INFO

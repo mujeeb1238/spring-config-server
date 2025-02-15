@@ -1,0 +1,41 @@
+# Production-specific configurations for Gateway Service
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: service1_route
+          uri: http://service1:8081
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - StripPrefix=0
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 100
+                redis-rate-limiter.burstCapacity: 200
+                redis-rate-limiter.requestedTokens: 1
+      httpclient:
+        connect-timeout: 1000
+        response-timeout: 3s
+
+logging:
+  level:
+    org.springframework.cloud.gateway: WARN
+    reactor.netty: WARN
+    root: WARN
+  file:
+    name: /var/log/gateway/application.log
+    max-size: 100MB
+  logback:
+    rollingpolicy:
+      max-history: 30
+      max-file-size: 100MB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
