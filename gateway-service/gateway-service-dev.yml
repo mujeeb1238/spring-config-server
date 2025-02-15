@@ -1,21 +1,67 @@
-# Development-specific configurations for Gateway Service
 spring:
+  application:
+    name: gateway-service
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  profiles:
+    active: dev
   cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        instanceId: ${spring.application.name}:${random.value}
+        healthCheckPath: /actuator/health
+        healthCheckInterval: 15s
+        register: true
+        prefer-ip-address: true
     gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
       routes:
         - id: client-service_route
-          uri: http://localhost:8081
+          uri: lb://client-service
           predicates:
             - Path=/api/users/**
           filters:
             - StripPrefix=0
-      httpclient:
-        connect-timeout: 2000
-        response-timeout: 5s
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+                redis-rate-limiter.requestedTokens: 1            
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=api/v1/auth/**
+          filters:
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+                redis-rate-limiter.requestedTokens: 1        
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    reactor.netty: DEBUG
-    org.springframework.web: DEBUG
-    root: INFO
+server:
+  port: 8080
+
+# Enhanced actuator configuration for Gateway UI
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      enabled: true
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
