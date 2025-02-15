@@ -1,4 +1,4 @@
-# Staging-specific configurations for service1
+# Staging-specific configurations for client-service
 spring:
   datasource:
     url: jdbc:postgresql://staging-db:5432/service1db_staging
@@ -16,15 +16,15 @@ spring:
 
 logging:
   level:
-    com.example.service1: INFO
+    com.example.clientservice: INFO
     org.hibernate.SQL: INFO
     org.hibernate.type.descriptor.sql.BasicBinder: INFO
   file:
-    name: /var/log/service1/application-staging.log
+    name: /var/log/client-service/application-staging.log
     max-size: 100MB
     max-history: 30
 
-service1:
+client-service:
   feature:
     enabled: true
     debug-mode: false
