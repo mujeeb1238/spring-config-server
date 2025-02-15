@@ -3,8 +3,8 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: service1_route
-          uri: http://service1:8081
+        - id: auth-service_route
+          uri: http://auth-service:8081
           predicates:
             - Path=/api/users/**
           filters:
