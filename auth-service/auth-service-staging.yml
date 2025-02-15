@@ -13,6 +13,30 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+      discovery:
+        instanceId: ${spring.application.name}:${random.value}
+        healthCheckPath: /actuator/health
+        healthCheckInterval: 15s
+        register: true
+        prefer-ip-address: true
+
+server:
+  port: ${SERVER_PORT:9000}
+  tomcat:
+    max-threads: 200
+    min-spare-threads: 20
+    max-connections: 5000
+
+jwt:
+  secret: ${JWT_SECRET:5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437}
+  access-token:
+    expiration: 1800 # 30 minutes
+  refresh-token:
+    expiration: 1209600 # 14 days
 
 logging:
   level:
