@@ -1,21 +1,18 @@
-# Development-specific configurations for Auth Service
+# Development-specific configurations for auth-service
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/auth_service_dev
     username: dev_user
     password: dev_password
     driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 5
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
-        format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
   cloud:
     consul:
       host: localhost
@@ -44,19 +41,10 @@ jwt:
 
 logging:
   level:
-    root: INFO
-    org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.security.oauth2: DEBUG
     com.example.authservice: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
+auth-service:
+  feature:
+    debug-mode: true

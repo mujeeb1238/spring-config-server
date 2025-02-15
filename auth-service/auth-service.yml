@@ -1,23 +1,10 @@
-# Common configurations for Auth Service
+# Common configurations for all profiles
+server:
+  port: 8082
+
 spring:
   application:
     name: auth-service
-  cloud:
-    consul:
-      discovery:
-        register: true
-        prefer-ip-address: true
-
-server:
-  port: 9000
-
-jwt:
-  access-token:
-    expiration: 900 # 15 minutes
-  refresh-token:
-    expiration: 604800 # 7 days
-  id-token:
-    expiration: 3600 # 1 hour
 
 management:
   endpoints:
@@ -36,3 +23,11 @@ jwt:
   id-token:
     expiration: 3600 # 1 hour
 
+# Common service-specific settings
+auth-service:
+  feature:
+    enabled: true
+  cache:
+    ttl: 3600
+  api:
+    timeout: 5000
