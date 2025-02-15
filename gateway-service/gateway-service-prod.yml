@@ -1,14 +1,25 @@
-# Production-specific configurations for Gateway Service
 spring:
   cloud:
     gateway:
       routes:
-        - id: service1_route
-          uri: http://service1:8081
+        - id: auth-service-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/auth/**
+          filters:
+            - PreserveHostHeader
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 100
+                redis-rate-limiter.burstCapacity: 200
+                redis-rate-limiter.requestedTokens: 1
+        - id: client-service-route
+          uri: lb://client-service
           predicates:
             - Path=/api/users/**
           filters:
-            - StripPrefix=0
+            - PreserveHostHeader
             - name: RequestRateLimiter
               args:
                 redis-rate-limiter.replenishRate: 100
@@ -23,24 +34,44 @@ spring:
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD:}
 
+server:
+  tomcat:
+    max-threads: 400
+    min-spare-threads: 40
+    max-connections: 10000
+    accept-count: 100
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+    min-response-size: 2048
+
 logging:
   level:
     org.springframework.cloud.gateway: WARN
-    reactor.netty: WARN
-    root: WARN
+    org.springframework.web: WARN
+    com.example.gateway: WARN
   file:
-    name: /var/log/gateway/application.log
-    max-size: 100MB
+    name: /var/log/gateway/application-prod.log
+    max-size: 500MB
   logback:
     rollingpolicy:
-      max-history: 30
-      max-file-size: 100MB
+      max-history: 60
+      max-file-size: 500MB
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,metrics,prometheus
   endpoint:
     health:
       show-details: never
+  metrics:
+    tags:
+      application: gateway-service
+      environment: production
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      sla:
+        http.server.requests: 10ms,50ms,100ms,200ms,500ms
