@@ -1,4 +1,4 @@
-# Production-specific configurations for service1
+# Production-specific configurations for client-service
 spring:
   datasource:
     url: jdbc:postgresql://prod-db:5432/service1db_prod
@@ -16,18 +16,18 @@ spring:
 
 logging:
   level:
-    com.example.service1: WARN
+    com.example.clientservice: WARN
     org.hibernate: ERROR
     root: WARN
   file:
-    name: /var/log/service1/application-prod.log
+    name: /var/log/client-service/application-prod.log
     max-size: 500MB
     max-history: 60
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
-service1:
+client-service:
   feature:
     enabled: true
     debug-mode: false
@@ -46,7 +46,7 @@ management:
       show-details: never
   metrics:
     tags:
-      application: service1
+      application: client-service
       environment: production
 
 server:
