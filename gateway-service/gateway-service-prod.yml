@@ -4,7 +4,7 @@ spring:
     gateway:
       routes:
         - id: client-service_route
-          uri: http://auth-service:8081
+          uri: lb://auth-service
           predicates:
             - Path=/api/users/**
           filters:
