@@ -73,14 +73,3 @@ management:
     tags:
       application: auth-service
       environment: production
-
-server:
-  tomcat:
-    max-threads: 200
-    min-spare-threads: 20
-    max-connections: 10000
-    accept-count: 100
-  compression:
-    enabled: true
-    mime-types: application/json,application/xml,text/html,text/xml,text/plain
-    min-response-size: 2048
