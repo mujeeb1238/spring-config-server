@@ -1,62 +1,25 @@
-# Development-specific configurations for Auth Service
+# Development-specific configurations for service1
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/auth_service_dev
     username: dev_user
     password: dev_password
     driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 5
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
-        format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        instanceId: ${spring.application.name}:${random.value}
-        healthCheckPath: /actuator/health
-        healthCheckInterval: 15s
-        register: true
-        prefer-ip-address: true
-
-server:
-  port: 9000
-  error:
-    include-message: always
-    include-binding-errors: always
-
-jwt:
-  secret: ${JWT_SECRET:your-256-bit-secret-key-here}
-  access-token:
-    expiration: 900 # 15 minutes
-  refresh-token:
-    expiration: 604800 # 7 days
-  id-token:
-    expiration: 3600 # 1 hour
+        format_sql: true
 
 logging:
   level:
-    root: INFO
-    org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.security.oauth2: DEBUG
-    com.example.authservice: DEBUG
+    com.example.clientservice: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
+client-service:
+  feature:
+    debug-mode: true
