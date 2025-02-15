@@ -2,8 +2,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://staging-db:5432/service1db_staging
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    username: root
+    password: password
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

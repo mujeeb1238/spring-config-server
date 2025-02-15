@@ -2,8 +2,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://prod-db:5432/service1db_prod
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    username: root
+    password: password
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
