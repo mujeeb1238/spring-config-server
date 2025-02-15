@@ -1,7 +1,7 @@
-# Production-specific configurations for client-service
+# Production-specific configurations for auth-service
 spring:
   datasource:
-    url: jdbc:postgresql://prod-db:5432/service1db_prod
+    url: jdbc:postgresql://prod-db:5432/auth_service_dev
     username: root
     password: password
     driver-class-name: org.postgresql.Driver
@@ -16,18 +16,18 @@ spring:
 
 logging:
   level:
-    com.example.clientservice: WARN
+    com.example.authservice: WARN
     org.hibernate: ERROR
     root: WARN
   file:
-    name: /var/log/client-service/application-prod.log
+    name: /var/log/auth-service/application-prod.log
     max-size: 500MB
     max-history: 60
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
-client-service:
+auth-service:
   feature:
     enabled: true
     debug-mode: false
@@ -46,7 +46,7 @@ management:
       show-details: never
   metrics:
     tags:
-      application: client-service
+      application: auth-service
       environment: production
 
 server:

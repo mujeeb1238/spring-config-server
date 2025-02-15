@@ -1,10 +1,10 @@
 # Common configurations for all profiles
 server:
-  port: 8081
+  port: 8082
 
 spring:
   application:
-    name: client-service
+    name: auth-service
 
 # Common service-specific settings
 service1:

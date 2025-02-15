@@ -1,7 +1,7 @@
-# Staging-specific configurations for client-service
+# Staging-specific configurations for auth-service
 spring:
   datasource:
-    url: jdbc:postgresql://staging-db:5432/service1db_staging
+    url: jdbc:postgresql://staging-db:5432/auth_service_dev
     username: root
     password: password
     driver-class-name: org.postgresql.Driver
@@ -16,15 +16,15 @@ spring:
 
 logging:
   level:
-    com.example.clientservice: INFO
+    com.example.authservice: INFO
     org.hibernate.SQL: INFO
     org.hibernate.type.descriptor.sql.BasicBinder: INFO
   file:
-    name: /var/log/client-service/application-staging.log
+    name: /var/log/auth-service/application-staging.log
     max-size: 100MB
     max-history: 30
 
-client-service:
+auth-service:
   feature:
     enabled: true
     debug-mode: false

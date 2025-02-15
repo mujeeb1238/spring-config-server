@@ -1,71 +1,31 @@
+# Common configurations for Gateway Service
 spring:
-  application:
-    name: gateway-service
-  config:
-    import: "optional:configserver:http://localhost:8888"
-  profiles:
-    active: dev
   cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        instanceId: ${spring.application.name}:${random.value}
-        healthCheckPath: /actuator/health
-        healthCheckInterval: 15s
-        register: true
-        prefer-ip-address: true
-        tags:
-          - api-gateway
-          - spring-cloud
-        metadata:
-          version: 1.0
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lowerCaseServiceId: true
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-        - AddResponseHeader=X-Response-Time, $\{responseTime:T(java.time.LocalDateTime).now()\}
-      httpclient:
-        connect-timeout: 2000
-        response-timeout: 5s
+      routes:
+        - id: service1_route
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - StripPrefix=0
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+                redis-rate-limiter.requestedTokens: 1
   data:
     redis:
       host: localhost
       port: 6379
 
-server:
-  port: 8080
-
 management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health,info,gateway
   endpoint:
-    gateway:
-      enabled: true
     health:
       show-details: always
-      probes:
-        enabled: true
-  info:
-    env:
+    gateway:
       enabled: true
-  health:
-    consul:
-      enabled: true
-    redis:
-      enabled: true
-  metrics:
-    tags:
-      application: ${spring.application.name}
-      environment: ${spring.profiles.active:dev}
-
-logging:
-  level:
-    org.springframework.cloud.gateway: INFO
-    org.springframework.web: INFO
-    com.example.gateway: INFO
