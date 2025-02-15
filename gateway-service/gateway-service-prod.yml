@@ -17,6 +17,11 @@ spring:
       httpclient:
         connect-timeout: 1000
         response-timeout: 3s
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
 
 logging:
   level:
