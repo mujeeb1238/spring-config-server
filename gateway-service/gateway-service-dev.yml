@@ -4,13 +4,13 @@ spring:
     gateway:
       routes:
         - id: client-service_route
-          uri: http://localhost:8081
+          uri: lb://client-service
           predicates:
             - Path=/api/users/**
           filters:
             - StripPrefix=0
         - id: auth-service_route
-          uri: http://localhost:9000
+          uri: lb://auth-service
           predicates:
             - Path=/api/auth/**
           filters:
