@@ -1,0 +1,43 @@
+# Staging-specific configurations for service1
+spring:
+  datasource:
+    url: jdbc:postgresql://staging-db:5432/service1db_staging
+    username: root
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+logging:
+  level:
+    com.example.service1: INFO
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: INFO
+  file:
+    name: /var/log/service1/application-staging.log
+    max-size: 100MB
+    max-history: 30
+
+service1:
+  feature:
+    enabled: true
+    debug-mode: false
+  cache:
+    ttl: 3600
+  api:
+    timeout: 5000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized

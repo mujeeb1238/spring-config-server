@@ -1,0 +1,16 @@
+# Common configurations for all profiles
+server:
+  port: 8081
+
+spring:
+  application:
+    name: service1
+
+# Common service-specific settings
+service1:
+  feature:
+    enabled: true
+  cache:
+    ttl: 3600
+  api:
+    timeout: 5000
