@@ -4,7 +4,7 @@ spring:
     gateway:
       routes:
         - id: client-service_route
-          uri: lb://auth-service
+          uri: lb://client-service
           predicates:
             - Path=/api/users/**
           filters:
